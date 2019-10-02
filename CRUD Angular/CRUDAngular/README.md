@@ -1,3 +1,7 @@
+# Frameworks implementados
+
+- Angular, Jquery , Angular-forms (Template Driven validation method) e Bootstrap 4.
+
 # CRUDAngular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.0.
