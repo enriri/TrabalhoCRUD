@@ -1,3 +1,6 @@
+<div class="alert alert-danger" role="alert" *ngIf="">
+        A simple danger alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+</div>
 
 <div class="container border rounded" style="padding: 2%;margin-top: 3%; margin-bottom: 3%;">
 
@@ -8,7 +11,8 @@
     </div>
 
     <!--Etapa 1-->
-        <div class="container" id="etapa1">
+    <form name="cadastro">
+        <div class="container form-group" id="etapa1" ngModel name="etapa1" #etapa1="ngModel">
 
             <div class="row">
                 &nbsp;
@@ -19,11 +23,21 @@
             <div class="row">
                 
                 <div class="col-sm">
-                        <label for="nome">Nome</label>
-                        <input type="text" name="nome" class="form-control">
-                        <label for="sobrenome">Sobrenome</label>
-                        <input type="text" name="sobrenome" class="form-control">                        
-                        <label>&nbsp;</label>
+                        
+                    <label for="firstName">Nome</label>
+                        <input type="text" required minlength="3" maxlength="15" ngModel #firstName="ngModel" name="firstName" class="form-control">
+                        <small *ngIf="firstName.touched && !firstName.valid" class="form-text text-muted">                            
+                            <div *ngIf="firstName.errors.required">Este campo e obrigatório</div> 
+                            <div *ngIf="firstName.errors.minlength">Nome deve ter pelomenos 3 letras !</div>                            
+                        </small>
+                        <label for="sobrenome">Sobrenome</label>                        
+                        <input type="text" required minlength="3" maxlength="50" ngModel #sobrenome="ngModel" name="sobrenome"class="form-control">
+                        <small class="form-text text-muted" *ngIf="sobrenome.touched && !sobrenome.valid">
+                            <div *ngIf="sobrenome.errors.required">Este campo é obrigatório.</div>
+                            <div *ngIf="sobrenome.errors.minlength">Sobrenome deve ter pelomenos 3 letras !</div>
+                        </small>                        
+                        
+                    <label>&nbsp;</label>
                         <div class="form-control" style="border: 0px;">&nbsp;</div>
                         <div>&nbsp;</div>
                         <button class="btn btn-secondary float-left" disabled>Anterior</button>
@@ -32,18 +46,26 @@
                 <div class="col-sm">
 
                         <label for="sexo">Sexo</label>
-                        <select name="sexo" class="form-control">
-                                <option>Selecione</option> 
+                        <select ngModel #sexo="ngModel" name="sexo" required class="form-control" id="sexo">                                
                                 <option value="M">Masculino</option>
                                 <option value="F">Feminino</option>
                         </select>
-                        
+                        <small class="form-text text-muted" *ngIf="sexo.control.value == '' && sexo.touched">
+                                <div>Este campo é obrigatório.</div>                                
+                        </small> 
+
                         <label for="nascimento">Data de Nascimento</label>
-                        <input type="date" name="nascimento" class="form-control">
+                        <input type="date" required ngModel pattern="/^([0-9]{2}[-/][0-9]{2}[-/][0-9]{4})|([0-9]{8})/" #nascimento="ngModel" name="nascimento" class="form-control">
+                        <small class="form-text text-muted" *ngIf="nascimento.touched && !nascimento.valid">
+                                <div #nascimentoObriga *ngIf="nascimento.errors.required">Este campo é obrigatório.</div>                                
+                        </small>
+
                         <label>&nbsp;</label>
                         <div class="form-control" style="border: 0px;">&nbsp;</div>
                         <div>&nbsp;</div>
-                        <button class="btn btn-secondary float-right" id="etapa1_prox">Proximo</button>
+                        <button class="btn btn-secondary float-right" id="etapa1_prox" 
+                        [attr.disabled]="firstName.invalid || sobrenome.invalid || nascimento.errors.required || sexo.pristine ? '' : null" 
+                        >Proximo</button>
                 </div>
                     
             </div>
@@ -52,7 +74,7 @@
     
     <!--Etapa 2-->
     
-    <div class="container" id="etapa2">
+    <div class="container form-group" id="etapa2">
             <div class="row">
                 &nbsp;
             </div>
@@ -63,11 +85,24 @@
                 
                 <div class="col-sm">
                         <label for="login">Login</label>
-                        <input type="text" name="login" class="form-control">
+                        <input type="text" required minlength="3" ngModel #login="ngModel" name="login" class="form-control">
+                        <small *ngIf="login.touched && !login.valid" class="form-text text-muted">                            
+                                <div *ngIf="login.errors.required">Este campo e obrigatório</div> 
+                                <div *ngIf="login.errors.minlength">O login deve ter pelomenos 3 letras !</div>                            
+                        </small>
                         <label for="senha">Senha</label>
-                        <input type="password" name="senha" class="form-control">
-                        <label for="confirm_password">Confime sua senha</label>
-                        <input type="password" name="confirm_password" class="form-control">
+                        <input type="password" required ngModel #senha="ngModel" name="senha" class="form-control" id="senha">
+                        <small *ngIf="senha.touched && !senha.valid" class="form-text text-muted">                            
+                                <div *ngIf="senha.errors.required">Este campo e obrigatório</div> 
+                                <div *ngIf="senha.errors.minlength">A senha deve ter pelomenos 3 letras !</div>                            
+                        </small>
+                        <label for="confirm_password">Confirme sua senha</label>
+                        <input type="password" required ngModel #confirmSenha="ngModel" name="confirm_password" class="form-control" id="confirmSenha" match="senha">
+                        <small *ngIf="confirmSenha.touched && confirmSenha.invalid" class="form-text text-muted">                            
+                                <div *ngIf="confirmSenha.errors.required">Este campo e obrigatório</div> 
+                                <div id="senhaNaoBate">As senhas não batem</div>                            
+                        </small>
+                        
                         <div>&nbsp;</div>
                         <button class="btn btn-secondary float-left" id="etapa2_ant">Anterior</button>
                         
@@ -75,13 +110,22 @@
                 <div class="col-sm">
 
                         <label for="email">Email</label>
-                        <input name="email" type="email" class="form-control">                                                
+                        <input ngModel #eemail="ngModel" required email name="email" type="email" class="form-control" id="email">                                                
+                        <small *ngIf="eemail.touched && eemail.invalid" class="form-text text-muted">                            
+                            <div *ngIf="eemail.errors.required">Este campo e obrigatório</div> 
+                            <div *ngIf="eemail.errors.email">Digite um email valido</div>                        
+                        </small>
                         <label for="confirm_email">Confirme seu Email</label>
-                        <input name="confirm_email" type="email" class="form-control">
+                        <input ngModel #confirmEmail="ngModel" required email name="confirmEmail" type="email" class="form-control" id="confirmEmail">
+                        <small *ngIf="confirmEmail.touched && confirmEmail.invalid" class="form-text text-muted">                            
+                            <div *ngIf="confirmEmail.errors.required">Este campo e obrigatório</div> 
+                            <div *ngIf="confirmEmail.errors.email">Digite um email valido</div>
+                            <div id="emailNaoBate">Emails nao batem</div>                    
+                        </small>
                         <label>&nbsp;</label>
                         <div class="form-control" style="border: 0px;">&nbsp;</div>
                         <div>&nbsp;</div>
-                        <button class="btn btn-secondary float-right" id="etapa2_prox">Proximo</button>
+                        <button class="btn btn-secondary float-right" id="etapa2_prox" [attr.disabled]="login.invalid || senha.invalid || eemail.invalid || confirmEmail.invalid ? '' : null">Proximo</button>
                 </div>
                     
             </div>
@@ -90,7 +134,7 @@
 
 <!--Etapa 3-->
     
-<div class="container" id="etapa3">
+    <div class="container form-group" id="etapa3">
         <div class="row">
             &nbsp;
         </div>
@@ -101,18 +145,26 @@
             
             <div class="col-sm">
                     <label for="estado">Estado</label>
-                    <select name="estado" class="form-control">
-                        <option>Selecione</option>
+                    <select ngModel required #estado="ngModel" name="estado" class="form-control">                        
                         <option value="RJ">Rio de Janeiro</option>
                         <option value="SP">São Paulo</option>
                         <option value="BH">Belo Horizonte</option>
                     </select>    
+                    <small class="form-text text-muted" *ngIf="estado.control.value == '' && estado.touched">
+                            <div>Este campo é obrigatório.</div>                                
+                    </small>
 
                     <label for="cidade">Cidade</label>
-                    <input class="form-control" type="text" name="cidade"> 
+                    <input class="form-control" type="text" ngModel #cidade="ngModel" required name="cidade">
+                    <small *ngIf="cidade.touched && !cidade.valid" class="form-text text-muted">                            
+                            <div *ngIf="cidade.errors.required">Este campo e obrigatório</div>                                                         
+                    </small> 
                     
                     <label for="Rua">Rua</label>
-                    <input class="form-control" type="text" name="rua">
+                    <input class="form-control" type="text" ngModel #rua="ngModel" required name="rua">
+                    <small *ngIf="rua.touched && !rua.valid" class="form-text text-muted">                            
+                            <div *ngIf="rua.errors.required">Este campo e obrigatório</div>                                                      
+                    </small>
 
                     <div>&nbsp;</div>
                     <button class="btn btn-secondary flaot-left" id="etapa3_ant">Anterior</button>
@@ -121,16 +173,27 @@
             <div class="col-sm">
 
                     <label for="logradouro">Logradouro</label>
-                    <input name="logradouro" type="text" class="form-control">                                                
+                    <input ngModel #logradouro="ngModel" required name="logradouro" type="text" class="form-control">
+                    <small *ngIf="logradouro.touched && !logradouro.valid" class="form-text text-muted">                            
+                            <div *ngIf="logradouro.errors.required">Este campo e obrigatório</div>                                                         
+                    </small>                    
                     <label for="cep">Cep</label>
-                    <input name="cep" type="cep" class="form-control">
+                    <input ngModel #cep="ngModel" required pattern="\d{5}-?\d{3}" name="cep" type="cep" class="form-control">
+                    <small *ngIf="cep.touched && !cep.valid" class="form-text text-muted">                            
+                            <div *ngIf="cep.errors.required">Este campo e obrigatório</div>
+                            <div *ngIf="cep.errors.pattern">Digite um CEP valido.</div>                                                        
+                    </small>
                     <label>&nbsp;</label>
                     <div class="form-control" style="border: 0px;">&nbsp;</div>
                     <div>&nbsp;</div>
-                    <button class="btn btn-primary float-right" id="">Concluir</button>
+                    <button class="btn btn-primary float-right" id="" [attr.disabled]="estado.pristine || cidade.invalid || rua.invalid || logradouro.invalid || cep.invalid ? '' : null  ">Concluir</button>
             </div>
                 
         </div>
            
     </div>
+    </form>
 </div>
+
+
+
