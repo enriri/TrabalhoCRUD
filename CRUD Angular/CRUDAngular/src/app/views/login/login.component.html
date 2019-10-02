@@ -1,17 +1,22 @@
 <div app-navbar></div>
     <div class="container">
 
-            <div class="border rounded form-group" style="padding: 2%;margin-top: 3%; margin-bottom: 3%; width: 70%; height: 70%;">
+            <div class="border rounded form-group" style="padding: 2%;margin-top: 3%; margin-bottom: 3%; width: 70%; height: 70%; margin-right: auto; margin-left: auto">
                     
                     <h1 class="h3 mb-3 font-weight-normal">Entrar</h1>
                     <label for="inputEmail" class="sr-only">Login</label>
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Login" required="" autofocus="">
                     <div>&nbsp;</div>
                     <label for="inputPassword" class="sr-only">Senha</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required="">
                     <div>&nbsp;</div>
-                    <button class="btn btn-lg btn-primary " type="submit">Entrar</button>
-                    <p class="mt-5 mb-3 text-muted">© 2017-2019</p>
+                    
+                    <button class="btn btn-primary btn-sm " type="submit">Entrar</button>
+
+                    
+                            <small class="float-right">Ainda não faz parte? Afilie-se ! <button class="btn btn-sm btn-secondary" (click)="router.navigate(['/cadastro'])" type="submit">Cadastrar</button></small>
+                    
+                
             </div>
 
     </div>
